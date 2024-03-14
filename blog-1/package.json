@@ -2,7 +2,7 @@
   "name": "blog-1",
   "version": "1.0.0",
   "description": "",
-  "main": "bin/www.js",
+  "main": "./bin/www.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon ./bin/www.js"
   },

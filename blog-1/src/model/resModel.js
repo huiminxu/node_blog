@@ -6,7 +6,7 @@ class BaseModel{
             message=null;
         }
         if(data){
-            this.data=date
+            this.data=data
         };
         if(message){
             this.message = message;
