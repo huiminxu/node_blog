@@ -30,5 +30,6 @@ use mysql;
 删除记录 delete from mytable where id=1;
 删除表 drop table mytable;
 分页查询语句 slect * from mytable limit 1,2;
+查询排序 select * from mytable order by id desc;
 ## 关闭mysql
 停止mysql服务：brew services stop mysql
