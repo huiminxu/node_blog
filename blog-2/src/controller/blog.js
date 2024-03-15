@@ -12,34 +12,67 @@ const getList=(author,keyword) => {
     return exec(sql);
 }
 const getDetail=(id) => {
-        return {
-            id,
-            title:'hello world',
-            author:'xuhuimin',
-            date:'2019-06-01'
-        }
+    return exec(`select * from blog where id=${id}`).then(rows=>{
+        return rows[0]
+    })    
+        // return {
+        //     id,
+        //     title:'hello world',
+        //     author:'xuhuimin',
+        //     date:'2019-06-01'
+        // }
 }
 
-const newBlog=(title,author) => {
-        return {
-            id:Math.random(),
-            title,
-            author, 
-            date:'2019-06-01'
+const newBlog=({title,content,author}) => {
+    let createtime = Date.now();
+    return exec(`insert into blog(title,content,author,createtime) values('${title}','${content}','${author}','${createtime}')`).then(rows=>{
+        return  {
+            id: rows.insertId
         }
+    });
+        // return {
+        //     id:Math.random(),
+        //     title,
+        //     author, 
+        //     date:'2019-06-01'
+        // }
 }
 
 const updateBlog=(id,body) => {
-        return {
-            id,
-            title:body.title,
-            author:body.author, 
-            date:'2019-06-01'
+    return exec(`update blog set title='${body.title}',content='${body.content}',author='${body.author}' where id=${id}`).then(rows=>{
+        // return  {
+        //     update:rows.affectedRows
+        // }
+        if(rows.affectedRows>0){
+            return true
+        }else{
+            return false
         }
+    });
+        // return {
+        //     id,
+        //     title:body.title,
+        //     author:body.author, 
+        //     date:'2019-06-01'
+        // }
+}
+
+const delBlog = (id) => {
+    return exec(`delete from blog where id=${id}`).then(rows=>{
+        // return  {
+        //     delete:rows.affectedRows
+        // }
+        if(rows.affectedRows>0){
+            return true
+        }else{
+            return false
+        }
+    });
 }
 module.exports = {
     getList,
     getDetail,
     newBlog,
-    updateBlog
+    updateBlog,
+    delBlog
 }

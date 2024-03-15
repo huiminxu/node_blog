@@ -1,4 +1,4 @@
-const {login} = require('../controller/user');
+const {loginCheck} = require('../controller/user');
 const { SuccessModel,ErrorModel } = require('../model/resModel');
 const handleUserRouter = (req,res) => {
     const method =req.method;
@@ -8,12 +8,22 @@ const handleUserRouter = (req,res) => {
         //     msg:'登录接口'
         // }
         console.log(req.body);
-       let res = login(req.body)
-       if(res){
-        return new SuccessModel(res)
-       }else{
-        return new ErrorModel('登录失败')
-       }
+       let res = loginCheck(req.body)
+        return res.then((result) => {
+            if(result){
+                return new SuccessModel(result)
+            }else{
+             return new ErrorModel('登录失败')
+
+            }
+           
+       })
+
+    //    if(res){
+    //     return new SuccessModel(res)
+    //    }else{
+    //     return new ErrorModel('登录失败')
+    //    }
     }
 }
 module.exports={
