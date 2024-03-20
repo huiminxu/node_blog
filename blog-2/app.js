@@ -1,8 +1,9 @@
 const querystring = require('querystring');
 const {handleBlogRouter} = require('./src/router/blog');
 const {handleUserRouter} = require('./src/router/user');
-
-const SESSION_DATA ={};
+const {get,set} = require('./src/db/redis');
+//session 数据（重启数据就没了）
+// const SESSION_DATA ={};
 //处理postData
 const getPostData = (req)=>{
     const promise = new Promise((resolve,reject)=>{
@@ -48,19 +49,27 @@ const serverHandle = (req,res) =>{
     //解析session
     let needSetCookie = false;
     let userId = req.cookie.userid;
-    if(userId){
-        if(!SESSION_DATA[userId]){
-            SESSION_DATA[userId]={}
-        }
-    }else{
+
+    // if(userId){
+    //     if(!SESSION_DATA[userId]){
+    //         SESSION_DATA[userId]={}
+    //     }
+    // }else{
+    //     needSetCookie = true;
+    //     userId =`${Date.now()}_${Math.random()}`;
+    //     SESSION_DATA[userId]={}
+    // }
+
+    // req.session = SESSION_DATA[userId];
+
+
+    if(!userId){
         needSetCookie = true;
         userId =`${Date.now()}_${Math.random()}`;
-        SESSION_DATA[userId]={}
+        set(userId,{})
     }
-
-    req.session = SESSION_DATA[userId];
-
-
+    req.sessionId = userId;
+    req.session = get[userId];
     //处理postData
     getPostData(req).then((postData)=>{
         req.body = postData;
